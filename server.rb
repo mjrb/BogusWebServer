@@ -51,6 +51,7 @@ serverThread=Thread.new do
 
     #send file
     begin
+      filename=filename.insert 0, $config[:root]+"/"
       filename=filename.dup.chop.chop.chop.chop+"rb"
       puts "running script"
       load filename

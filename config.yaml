@@ -8,3 +8,4 @@
 :auto_increment_id: true
 :scrubGet: true
 :noscriptMsg: "<br><h1>turn on js plz</h1><br>"
+:root: "testFiles"
