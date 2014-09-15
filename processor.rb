@@ -1,0 +1,41 @@
+puts "loading preprocesor"
+module Processor
+  def Processor.preprocess str
+    while str.include? "<rb>"
+      beginOccurance=str.index /<rb>/i
+      endOccurance=str.index /<\/rb>/i
+      occurance=str[beginOccurance+4..endOccurance-1]
+      str.sub! /<rb>.+?<\/rb>/im, (eval occurance).to_s
+    end
+  end
+  
+  def Processor.scrub str
+    str.gsub! /\#{.+?}/m, ""
+    str.gsub! "+", " "
+  end
+  
+  def Processor.parseGet str
+    tmp=Hash.new
+    #if more values
+    if str.include? "&"
+      #chop off the ? when beginning
+      if str[0]=="?"
+        str=str[1..str.length]
+      end
+      keyEnd=str.index "="
+      key=str[0..keyEnd-1]
+      valEnd=str.index "&"
+      val=str[keyEnd+1..valEnd-1]
+      tmp[key.to_sym]=val
+      str=str[valEnd+1..str.length]
+      puts str
+      tmp.merge! parseGet str
+    else#last case
+      keyEnd=str.index "="
+      key=str[0..keyEnd-1]
+      val=str[keyEnd+1..str.length]
+      tmp[key.to_sym]=val
+    end
+    tmp
+  end
+end

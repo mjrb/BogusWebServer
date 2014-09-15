@@ -1,0 +1,10 @@
+---
+:db: "db.yaml"
+:ip: "127.0.0.1"
+:port: 7125
+:homepage: "index.html"
+:noFileCondition: "phrase"
+:noFile: "O SNAP 404"
+:auto_increment_id: true
+:scrubGet: true
+:noscriptMsg: "<br><h1>turn on js plz</h1><br>"
