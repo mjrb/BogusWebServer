@@ -24,7 +24,4 @@ def problem
   $problem
 end
 
-content=File.read $config[:root]+"/"+"index.html"
-Processor::preprocess content
-Js::append content
-$session.print content
+view "index.html"

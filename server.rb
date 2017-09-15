@@ -18,14 +18,18 @@ webserver=TCPServer.new($config[:ip], $config[:port])
 
 serverThread=Thread.new do
   while ($session = webserver.accept)
-    puts "conection"
+    puts "connection"
     $session.print "HTTP/1.1 200/OK\r\nContent-type:text/html\r\n\r\n"
 
     #get filename
     request=$session.gets
+    #if filename=="favicon.ico"
+      #$session.close
+    #end
     begin
       puts "request"+request
     rescue
+      puts "request"+request
       puts "no request"
       $session.close
     end
@@ -51,32 +55,28 @@ serverThread=Thread.new do
     puts "requested: "+filename
 
     #send file
-    if filename!="favicon.ico"
+    begin
+      scriptFilename=filename.insert 0, $config[:root]+"/"
+      scriptFilename=scriptFilename.dup.chop.chop.chop.chop+"rb"
+      puts "running script "+scriptFilename
+      load scriptFilename
+    rescue Errno::ENOENT
+      puts "no run script sending static file"
       begin
-        scriptFilename=filename.insert 0, $config[:root]+"/"
-        scriptFilename=scriptFilename.dup.chop.chop.chop.chop+"rb"
-        puts "running script "+scriptFilename
-        load scriptFilename
+        displayfile=File.open(filename, 'r')
+        content=displayfile.read()
+        $session.print content
       rescue Errno::ENOENT
-        puts "no run script sending static file"
-        begin
-          displayfile=File.open(filename, 'r')
-          content=displayfile.read()
-          $session.print content
-        rescue Errno::ENOENT
-          puts "file not found sending 404"
-          if $config[:noFileCondition]=="phrase"
-            $session.print $config[:noFile]
-          elsif $config[:noFileCondition]=="page"
-            $session.print File.read $config[:noFile]
-          else
-            raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
-          end
+        puts "file not found sending 404"
+        if $config[:noFileCondition]=="phrase"
+          $session.print $config[:noFile]
+        elsif $config[:noFileCondition]=="page"
+          $session.print File.read $config[:noFile]
+        else
+          raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
         end
       end
     end
-
-
     $session.close
   end
 end
