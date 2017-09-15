@@ -1,26 +1,33 @@
 <html>
   <head>
-    <title>StupidWebServer</title>
-    <h1>Stupid webserver</h1>
-    <h3><rb>greeting</rb></h3>
+    <title>SillyWebServer</title>
+    <h1>SillyWebServer</h1>
+    <h2>
+      <rb>greeting</rb>
+    </h2>
   </head>
     <body>
       <p>
-	this site was writen with a stupid web server!
+	       this site was writen with a silly web server!
       </p>
       <p>
-	i can still do dynamic html though.try entering your name
+	       I can still do some interesting things though. try entering your name
       </p>
+      <h3>more stuff</h3>
+      <a href="/contact.html">contact form</a><br>
+      <a href="messages.html">read messages from contact form(password in readme)</a><br>
+      <a href="/pchange.html">pasword change</a><br>
+      <a href="/hats.html">a static page</a><br>
+      <a href="/folder/index.html">page inside a folder</a><br>
       <rb>
-	if $problem!=""
-	  Js::alert $problem
-	end
-	Js::getCookie "cname", "index.html"
+	       if $problem!=""
+	         Js::alert $problem
+	       end
       </rb>
-      <form method="get" action="http://localhost:7125/index.html">
-	name:<input type="text" name="name"><br>
-	surname:<input type="text" name="surname">
-	<input type="submit" value="submit">
+      <form method="get" action="/index.html">
+	       name:<input type="text" name="name"><br>
+	       surname:<input type="text" name="surname">
+	       <input type="submit" value="submit">
       </form>
     </body>
 <html>

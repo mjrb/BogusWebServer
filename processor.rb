@@ -1,19 +1,22 @@
-puts "loading preprocesor"
+puts "loading procesor"
 module Processor
   def Processor.preprocess str
     while str.include? "<rb>"
       beginOccurance=str.index /<rb>/i
+      puts "b"+beginOccurance.to_s
       endOccurance=str.index /<\/rb>/i
+      puts "e"+endOccurance.to_s
       occurance=str[beginOccurance+4..endOccurance-1]
+      puts occurance
       str.sub! /<rb>.+?<\/rb>/im, (eval occurance).to_s
     end
   end
-  
+
   def Processor.scrub str
     str.gsub! /\#{.+?}/m, ""
     str.gsub! "+", " "
   end
-  
+
   def Processor.parseGet str
     tmp=Hash.new
     #if more values

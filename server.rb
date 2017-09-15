@@ -31,7 +31,8 @@ serverThread=Thread.new do
     end
     trimmedrequest=request.gsub(/GET\ \//, "").gsub(/\ HTTP.*/, "")
     filename=trimmedrequest.chomp
-    
+    puts filename
+
     #process get forums
     $get=Hash.new
     if filename.include? "?"
@@ -42,42 +43,51 @@ serverThread=Thread.new do
       $get=Processor::parseGet getstr
     end
     puts "get=> "+$get.to_s
-      
-    
+
+
     if filename=="" or /.\//.match filename
       filename+=$config[:homepage]
     end
     puts "requested: "+filename
 
     #send file
-    begin
-      filename=filename.insert 0, $config[:root]+"/"
-      filename=filename.dup.chop.chop.chop.chop+"rb"
-      puts "running script"
-      load filename
-    rescue Errno::ENOENT
-      puts "no run script sending static file"
+    if filename!="favicon.ico"
       begin
-        displayfile=File.open(filename, 'r')
-        content=displayfile.read()
-        $session.print content
+        scriptFilename=filename.insert 0, $config[:root]+"/"
+        scriptFilename=scriptFilename.dup.chop.chop.chop.chop+"rb"
+        puts "running script "+scriptFilename
+        load scriptFilename
       rescue Errno::ENOENT
-        puts "file not found sending 404"
-        if $config[:noFileCondition]=="phrase"
-          $session.print $config[:noFile]
-        elsif $config[:noFileCondition]=="page"
-          $session.print File.read $config[:noFile]
-        else
-          raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
+        puts "no run script sending static file"
+        begin
+          displayfile=File.open(filename, 'r')
+          content=displayfile.read()
+          $session.print content
+        rescue Errno::ENOENT
+          puts "file not found sending 404"
+          if $config[:noFileCondition]=="phrase"
+            $session.print $config[:noFile]
+          elsif $config[:noFileCondition]=="page"
+            $session.print File.read $config[:noFile]
+          else
+            raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
+          end
         end
       end
     end
-    
-    
+
+
     $session.close
   end
 end
-serverThread.abort_on_exception=true
+serverThread.abort_on_exception=false
+
+def view viewName
+  content=File.read $config[:root]+"/"+viewName
+  Processor::preprocess content
+  Js::append content
+  $session.print content
+end
 
 #command loop
 puts "now exepting commands"

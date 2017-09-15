@@ -1,11 +1,5 @@
 ---
 :sites:
-  :default:
-    :id: 2
-    :views: 0
   :index:
     :id: 0
-    :views: 95
-  :hats:
-    :id: 1
-    :views: 0
+    :views: 100

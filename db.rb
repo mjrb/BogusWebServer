@@ -1,4 +1,4 @@
-#this file shows the worst aspect of ruby: overloading
+#you cant overload functions in ruby so this is me trying
 $dbFile=$config[:db]
 
 #getter dbHash, table, coulumn, row or dbHash, array

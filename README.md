@@ -1,4 +1,6 @@
-BogusWebServer
+SillyWebServer
 ==============
 
-bogus is a wbeserver written in ruby that uses a decomplicated version of model controler view. it also has a db based on yaml
+features
+drawbacks
+- can only handle one client at a time

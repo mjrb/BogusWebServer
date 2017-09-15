@@ -5,14 +5,10 @@ $problem=""
 
 
 def greeting
-  cookieName=$get.has_key? :cname
   hasBoth=($get.has_key? :name) and ($get.has_key? :surname)
   bothFilled=!(($get[:name]=="") or ($get[:surname]==""))
-  Js::sendCookie "cname", $get[:name]+$get[:surname] if hasBoth and !cookieName
 
-  if cookieName
-      tmp="you are the number "+$views.to_s+" visitor"+$get[:cname]+"!"
-  elsif hasBoth and bothFilled
+  if hasBoth and bothFilled
     tmp="you are the number "+$views.to_s+" visitor, "+$get[:name]+" "+$get[:surname]+"!"
   elsif $get==Hash.new
     tmp="you are the number "+$views.to_s+" visitor!"
@@ -28,7 +24,7 @@ def problem
   $problem
 end
 
-content=File.read "index.html"
+content=File.read $config[:root]+"/"+"index.html"
 Processor::preprocess content
 Js::append content
 $session.print content
