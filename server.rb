@@ -8,7 +8,12 @@ end
 
 $config=loadyaml "config.yaml"
 
-load "db.rb"
+if $config[:dbtype]=="silly"
+  load "db.rb"
+elsif $config[:dbtype]=="mongo"
+  load "mdb.rb"
+end
+
 load "processor.rb"
 load "js.rb"
 
@@ -54,26 +59,28 @@ serverThread=Thread.new do
     end
     puts "requested: "+filename
 
-    #send file
-    begin
-      scriptFilename=filename.insert 0, $config[:root]+"/"
-      scriptFilename=scriptFilename.dup.chop.chop.chop.chop+"rb"
-      puts "running script "+scriptFilename
-      load scriptFilename
-    rescue Errno::ENOENT
-      puts "no run script sending static file"
+    if filename!="favicon.ico"
+      #send file
       begin
-        displayfile=File.open(filename, 'r')
-        content=displayfile.read()
-        $session.print content
-      rescue Errno::ENOENT
-        puts "file not found sending 404"
-        if $config[:noFileCondition]=="phrase"
-          $session.print $config[:noFile]
-        elsif $config[:noFileCondition]=="page"
-          $session.print File.read $config[:noFile]
-        else
-          raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
+        scriptFilename=filename.insert 0, $config[:root]+"/"
+        scriptFilename=scriptFilename.dup.chop.chop.chop.chop+"rb"
+        puts "running script "+scriptFilename
+        load scriptFilename
+      rescue
+        puts "no run script sending static file"
+        begin
+          displayfile=File.open(filename, 'r')
+          content=displayfile.read()
+          $session.print content
+        rescue
+          puts "file not found sending 404"
+          if $config[:noFileCondition]=="phrase"
+            $session.print $config[:noFile]
+          elsif $config[:noFileCondition]=="page"
+            $session.print File.read $config[:noFile]
+          else
+            raise "invalid config: \":404condition: "+$config[:noFileCondition]+"\""
+          end
         end
       end
     end
@@ -96,10 +103,14 @@ while true
   if input=="c" or input=="close"
     puts "slosing down server"
     serverThread.exit
-    puts "saving db"
-    File.delete $dbFile
-    db=File.new $dbFile, "w"
-    db.write $dbHash.to_yaml
+    if $config[:dbtype]=="silly"
+      puts "saving db"
+      File.delete $dbFile
+      db=File.new $dbFile, "w"
+      db.write $dbHash.to_yaml
+    elsif $config[:dbtype]=="mongo"
+      $client.close
+    end
     break
   end
 end

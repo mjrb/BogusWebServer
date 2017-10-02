@@ -1,5 +1,6 @@
 ---
 :db: "db.yaml"
+:dbtype: "mongo"
 :ip: "127.0.0.1"
 :port: 7125
 :homepage: "index.html"
@@ -9,3 +10,5 @@
 :scrubGet: true
 :noscriptMsg: "<br><h1>turn on js plz</h1><br>"
 :root: "testFiles"
+:dbaddress: "localhost:27017"
+:dbname: "test"

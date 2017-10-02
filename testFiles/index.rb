@@ -1,6 +1,3 @@
-$views=getDB $dbHash, [:sites, :index, :views]
-setDB $dbHash, :sites, :index, :views, $views+1
-
 $problem=""
 
 
@@ -19,9 +16,10 @@ def greeting
   tmp
 end
 
+$client[:index].update_one({:counter => "visits"}, '$inc' => {:value => 1})
 
-def problem
-  $problem
-end
+#.find gives back a CollectionView so we have to unwrap it to get the value
+$visits=$client[:index].find(:counter=>"visits").to_a[0][:value].to_i
+
 
 view "index.html"
