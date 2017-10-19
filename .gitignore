@@ -1,5 +1,10 @@
 *.gem
 *.rbc
+todo.txt
+todo.txt~
+TODO
+TODO~
+*~
 /.config
 /coverage/
 /InstalledFiles
