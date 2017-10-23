@@ -3,7 +3,7 @@
 :dbtype: "mongo"
 :ip: "127.0.0.1"
 :port: 7125
-:homepage: "index.html"
+:homepage: "index"
 :noFileCondition: "phrase"
 :noFile: "O SNAP 404"
 :serverError: "500 server is confused"
