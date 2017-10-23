@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>messages</title>
+  </head>
+  <body>
+    <h1>User Messages!</h1>
+    <form action="/messages">
+      <!-- this is how you have as little security as posible-->
+      password: <input type="password" name="pwd">
+      <input type="submit" value="go!">
+    </form>
+    <rb>
+      messages
+    </rb>
+    <rb>
+      if $problem!=""
+        Js::alert $problem
+      end
+    </rb>
+  </body>
+</html>
