@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>contact us</title>
+  </head>
+  <body>
+    <h1>Send us a message!</h1>
+    <form action="/contact">
+      title:<input type="text" name="title"/><br>
+      email:<input type="email" name="email"/></br>
+      message:<textarea name="message" ></textarea><br>
+      <input type="submit" value="go!" />
+    </form>
+    <em><rb>messageSent</rb></em>
+    <rb>
+      if $problem!=""
+        Js::alert $problem
+      end
+    </rb>
+  </body>
+</html>
