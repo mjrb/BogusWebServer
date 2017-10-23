@@ -29,4 +29,6 @@ drawbacks
 first you must install mongodb and the mongo driver for ruby  
 then you must update the config for your wanted mongodb settings  
 then you can run `ruby dbinit.rb` to set up the database  
-finally run `ruby server.rb` to start the server  
+finally run `ruby server.rb` to start the server
+the default password is password  
+i set it to that because its really salt in the wounds because of how poor the authetication is for the example files
