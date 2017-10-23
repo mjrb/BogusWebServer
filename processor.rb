@@ -1,3 +1,4 @@
+require "uri"
 puts "loading procesor"
 module Processor
   def Processor.preprocess str
@@ -29,6 +30,7 @@ module Processor
       key=str[0..keyEnd-1]
       valEnd=str.index "&"
       val=str[keyEnd+1..valEnd-1]
+      val=URI.unescape val
       tmp[key.to_sym]=val
       str=str[valEnd+1..str.length]
       puts str
@@ -37,6 +39,7 @@ module Processor
       keyEnd=str.index "="
       key=str[0..keyEnd-1]
       val=str[keyEnd+1..str.length]
+      val=URI.unescape val
       tmp[key.to_sym]=val
     end
     tmp
