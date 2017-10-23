@@ -21,11 +21,11 @@ module Processor
   def Processor.parseGet str
     tmp=Hash.new
     #if more values
+    if str[0]=="?"
+      str=str[1..str.length]
+    end
     if str.include? "&"
       #chop off the ? when beginning
-      if str[0]=="?"
-        str=str[1..str.length]
-      end
       keyEnd=str.index "="
       key=str[0..keyEnd-1]
       valEnd=str.index "&"
