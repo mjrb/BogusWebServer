@@ -6,6 +6,8 @@
 :homepage: "index.html"
 :noFileCondition: "phrase"
 :noFile: "O SNAP 404"
+:serverError: "500 server is confused"
+:static: "testFiles/static"
 :auto_increment_id: true
 :scrubGet: true
 :noscriptMsg: "<br><h1>turn on js plz</h1><br>"
